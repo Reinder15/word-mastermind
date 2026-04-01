@@ -21,7 +21,29 @@ body.dark {
     flex: 1;
 }
 
+.dictionary-controls {
+    margin-bottom: 10px;
+}
+
+.dictionary-controls label {
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+.dictionary-controls select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 4px 8px;
+    background: #fff;
+}
+
 body.dark .header {
+    color: #d7dadc;
+}
+
+body.dark .dictionary-controls select {
+    background: #555;
+    border-color: #777;
     color: #d7dadc;
 }
 

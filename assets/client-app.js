@@ -43,10 +43,37 @@ const app = new Vue({
 
         gameState: undefined,
         error: undefined,
-        darkMode: false
+        darkMode: false,
+        availableDictionaries: [],
+        selectedDictName: undefined
     },
 
     methods: {
+
+        loadDictionaries: async function() {
+            const response = await fetch("/game/dictionaries");
+            const data = await response.json();
+
+            this.availableDictionaries = data.dictionaries || [];
+            const selectedFromUrl = queryStringParams.dictName;
+            if (selectedFromUrl && this.availableDictionaries.includes(selectedFromUrl)) {
+                this.selectedDictName = selectedFromUrl;
+                return;
+            }
+
+            this.selectedDictName = data.defaultDictName;
+        },
+
+        setSelectedDictionary: async function() {
+            const url = new URL(window.location.href);
+            if (this.selectedDictName) {
+                url.searchParams.set("dictName", this.selectedDictName);
+            } else {
+                url.searchParams.delete("dictName");
+            }
+            window.history.replaceState({}, "", url.toString());
+            await this.startGame();
+        },
 
         startGame: async function() {
             const response = await fetch("/game/start", {
@@ -55,7 +82,7 @@ const app = new Vue({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    dictName: queryStringParams.dictName
+                    dictName: this.selectedDictName
                 })
             });
             const newGameData = await response.json();
@@ -238,7 +265,7 @@ const app = new Vue({
     },
 
     mounted: function() {
-        this.startGame();
+        this.loadDictionaries().then(() => this.startGame());
 
         document.addEventListener("keyup", async (e) => {
             if (e.ctrlKey || e.altKey || e.metaKey) {

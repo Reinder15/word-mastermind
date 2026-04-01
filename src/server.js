@@ -46,6 +46,13 @@ fastify.post("/game/submit", (req, res) => {
     return result
 })
 
+fastify.get("/game/dictionaries", () => {
+    return {
+        defaultDictName: "en-us-5",
+        dictionaries: [...dictionaries.keys()].sort(),
+    }
+})
+
 
 const start = async () => {
     try {

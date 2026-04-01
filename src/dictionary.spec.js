@@ -47,6 +47,12 @@ describe("Dictionary", () => {
             expect(dictionary.hasWord("yummy")).toBe(true)
             expect(dictionary.hasWord("zxzxz")).toBe(false)
         })
+
+        test("normalizes CRLF line endings", async () => {
+            const dictionary = await Dictionary.create("nl-nl-6")
+            expect(dictionary.getWordLength()).toBe(6)
+            expect(dictionary.hasWord("aanbod")).toBe(true)
+        })
     })
 
     test("can get all available dictionaries", async () => {

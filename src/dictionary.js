@@ -42,8 +42,9 @@ const DICT_DIR = path.join(__dirname, "../dict/");
 Dictionary.create = async (dictFileName) => {
     const contents = await readFileAsync(path.join(DICT_DIR, dictFileName), "utf8")
     return new Dictionary(contents
-        .split("\n")
-        .filter(w => w.length > 0))
+    .split(/\r?\n/)
+    .map(w => w.trim())
+    .filter(w => w.length > 0))
 }
 
 Dictionary.getAllAvailableDictionaries = async () => {

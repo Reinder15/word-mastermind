@@ -18,6 +18,19 @@
             <div class="header">
                 <h1>Word Mastermind</h1>
 
+                <div class="dictionary-controls" v-if="availableDictionaries.length > 0">
+                    <label for="dictionary-select">Dictionary</label>
+                    <select
+                        id="dictionary-select"
+                        v-model="selectedDictName"
+                        v-on:change="setSelectedDictionary"
+                    >
+                        <option v-for="dictName in availableDictionaries" v-bind:key="dictName" v-bind:value="dictName">
+                            {{ dictName }}
+                        </option>
+                    </select>
+                </div>
+
                 <div v-on:click="toggleDarkMode">
                     <div v-if="darkMode">
                         <i class="bi bi-brightness-high" title="Disable Dark Mode"></i>
